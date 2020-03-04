@@ -23,16 +23,19 @@ public class BaseTest {
     private static WebDriver driver;
     private static final Logger logger = Logger.getLogger(BaseTest.class.getName());
 
-    public static final int DEFAULT_WAIT = 20;
-    private final String  driverName = "webdriver.chrome.driver";
-    private final String  googleDriverPath = "./driver/chromedriver";
-    private final String  firefoxDriverPath = "./driver/firefoxdriver";
-    private final String  baseUrl = "https://www.trendyol.com";
+    private static final int DEFAULT_WAIT = 20;
+    private static final String driverName = "webdriver.chrome.driver";
+    private static final String googleDriverPath = "./driver/chromedriver";
+    private static final String firefoxDriverPath = "./driver/firefoxdriver";
+    private static final String baseUrl = "https://www.trendyol.com";
 
     public static WebDriver getDriver() {
         return driver;
     }
 
+    public static int getDefaultWait(){
+        return DEFAULT_WAIT;
+    }
 
     @Before
     public void setup() {
@@ -72,7 +75,7 @@ public class BaseTest {
             try {
                 FileUtils.copyFile(scrFile, screenShotName);
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.info("Ekran görüntüsü kaydedilemedi...");
             }
         }
         driver.quit();

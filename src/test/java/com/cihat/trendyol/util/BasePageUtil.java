@@ -1,5 +1,6 @@
 package com.cihat.trendyol.util;
 
+import com.cihat.trendyol.logger.Log;
 import com.cihat.trendyol.tests.BaseTest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -15,66 +16,67 @@ import java.util.List;
 public class BasePageUtil {
 
     public WebDriver driver = BaseTest.getDriver();
+    private int defaultWait = BaseTest.getDefaultWait();
 
-    public void clickElement(By selector) {
-        WebDriverWait wait = new WebDriverWait(driver, BaseTest.DEFAULT_WAIT);
+    protected void clickElement(By selector) {
+        WebDriverWait wait = new WebDriverWait(driver, defaultWait);
         wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
         wait.until(ExpectedConditions.elementToBeClickable(selector)).click();
     }
 
-   public void clickElement(WebElement element) {
-        WebDriverWait wait = new WebDriverWait(driver, BaseTest.DEFAULT_WAIT);
+    protected void clickElement(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, defaultWait);
         wait.until(ExpectedConditions.visibilityOf(element));
         wait.until(ExpectedConditions.elementToBeClickable(element)).click();
     }
 
-    public List<WebElement> findElements(By selector)
+    protected List<WebElement> findElements(By selector)
     {
         return driver.findElements(selector);
     }
 
-    public void MouseOver(WebElement we){
+    protected void mouseOver(WebElement we){
         Actions action = new Actions(driver);
         action.moveToElement(we).build().perform();
     }
 
-    public void Wait(int millisecond) throws InterruptedException {
+    protected void forceWait(int millisecond) throws InterruptedException {
         Thread.sleep(millisecond);
     }
 
-    public void waitElementInvisibility(By selector) {
-        WebDriverWait wait = new WebDriverWait(driver, BaseTest.DEFAULT_WAIT);
+    protected void waitElementInvisibility(By selector) {
+        WebDriverWait wait = new WebDriverWait(driver, defaultWait);
         wait.until(ExpectedConditions.invisibilityOfElementLocated(selector));
     }
 
-    public void waitElementVisibility(By selector) {
-        WebDriverWait wait = new WebDriverWait(driver, BaseTest.DEFAULT_WAIT);
+    protected void waitElementVisibility(By selector) {
+        WebDriverWait wait = new WebDriverWait(driver, defaultWait);
         wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
     }
 
-    public void sendKeys(By selector, String text) {
-        WebDriverWait wait = new WebDriverWait(driver, BaseTest.DEFAULT_WAIT);
+    protected void sendKeys(By selector, String text) {
+        WebDriverWait wait = new WebDriverWait(driver, defaultWait);
         wait.until(ExpectedConditions.visibilityOfElementLocated(selector)).sendKeys(text);
     }
 
-    public void scrollTo(int x, int y){
+    protected void scrollTo(int x, int y){
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         executor.executeScript("window.scrollTo([0],[1])", x,y);
     }
 
-    public void clickForcefully(By selector) {
-        WebDriverWait wait = new WebDriverWait(driver, BaseTest.DEFAULT_WAIT);
+    protected void clickForcefully(By selector) {
+        WebDriverWait wait = new WebDriverWait(driver, defaultWait);
         WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(selector));
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         executor.executeScript("arguments[0].click();", element);
     }
 
-    public String getText(By selector) {
-        WebDriverWait wait = new WebDriverWait(driver, BaseTest.DEFAULT_WAIT);
+    protected String getText(By selector) {
+        WebDriverWait wait = new WebDriverWait(driver, defaultWait);
         return wait.until(ExpectedConditions.visibilityOfElementLocated(selector)).getText();
     }
 
-    public boolean isElementDisplayed(By selector) {
+    protected boolean isElementDisplayed(By selector) {
         try {
             return driver.findElement(selector).isDisplayed();
         }catch (WebDriverException e){
@@ -82,11 +84,11 @@ public class BasePageUtil {
         }
     }
 
-    public boolean checkImageDisplayed(WebElement element){
+    protected boolean checkImageDisplayed(WebElement element){
         return (Boolean) ((JavascriptExecutor)driver).executeScript("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", element);
     }
 
-    public boolean checkImageBroken(WebElement element){
+    protected boolean checkImageBroken(WebElement element){
         try {
             HttpClientBuilder clientBuilder = HttpClientBuilder.create();
             clientBuilder.disableCookieManagement();
@@ -97,12 +99,12 @@ public class BasePageUtil {
             if (response.getStatusLine().getStatusCode() != 200)
                 return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.error("Http error...",e);
         }
         return true;
     }
 
-    public void sendKeys(Keys key){
+    protected void sendKeys(Keys key){
         Actions action = new Actions(driver);
         action.sendKeys(key).perform();
     }
