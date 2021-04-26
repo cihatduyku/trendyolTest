@@ -13,7 +13,7 @@
         <log4j.version>1.2.27</log4j.version>
         <junit.version>4.12</junit.version>
         <cucumber.version>2.4.0</cucumber.version>
-        <commons.io.version>2.6</commons.io.version>
+        <commons.io.version>2.7</commons.io.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
